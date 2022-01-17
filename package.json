@@ -5,20 +5,27 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.7",
     "@emotion/cache": "latest",
     "@emotion/react": "^11.7.1",
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "apollo-server-micro": "^3.6.1",
+    "graphql": "^16.2.0",
+    "micro-cors": "^0.1.1",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "2.3.1",
+    "@types/micro-cors": "^0.1.2",
     "@types/react": "latest",
     "@typescript-eslint/eslint-plugin": "^5.9.1",
     "eslint": "latest",
@@ -27,6 +34,9 @@
     "husky": "^7.0.4",
     "lint-staged": "^12.1.7",
     "prettier": "^2.5.1",
-    "typescript": "latest"
+    "typescript": "latest",
+    "@graphql-codegen/typescript": "2.4.2",
+    "@graphql-codegen/typescript-react-apollo": "3.2.4",
+    "@graphql-codegen/typescript-operations": "2.2.2"
   }
 }

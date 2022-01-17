@@ -1,10 +1,38 @@
-import * as React from "react";
-import type { NextPage } from "next";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import client from "../utils/apolloClient";
+import { GetUsersDocument, User } from "../generated/graphql";
+import { NextPage } from "next";
 
-const Home: NextPage = () => {
+interface HomeProps {
+  users: User[];
+}
+
+export const getStaticProps = async () => {
+  const res = await client.query({
+    query: GetUsersDocument,
+  });
+
+  try {
+    if (res.error || (!res.loading && !res.data)) {
+      return { notFound: true };
+    }
+
+    return {
+      props: {
+        users: res.data.users,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return { notFound: true };
+  }
+};
+
+const Home: NextPage<HomeProps> = ({ users }) => {
+  console.log(users);
+
   return (
     <Container maxWidth="lg">
       <Box
