@@ -1,5 +1,5 @@
 {
-  "name": "e-commerce-prisma",
+  "name": "e-commerce",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -7,6 +7,9 @@
     "start": "next start",
     "lint": "next lint",
     "gen": "graphql-codegen --config codegen.yml"
+  },
+  "prisma": {
+    "seed": "ts-node -O {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.5.7",
@@ -16,6 +19,7 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "@prisma/client": "^3.8.1",
     "apollo-server-micro": "^3.6.1",
     "graphql": "^16.2.0",
     "micro-cors": "^0.1.1",
@@ -25,18 +29,20 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.3.1",
+    "@graphql-codegen/typescript": "2.4.2",
+    "@graphql-codegen/typescript-operations": "2.2.2",
+    "@graphql-codegen/typescript-react-apollo": "3.2.4",
     "@types/micro-cors": "^0.1.2",
     "@types/react": "latest",
-    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.1.7",
     "prettier": "^2.5.1",
-    "typescript": "latest",
-    "@graphql-codegen/typescript": "2.4.2",
-    "@graphql-codegen/typescript-react-apollo": "3.2.4",
-    "@graphql-codegen/typescript-operations": "2.2.2"
+    "prisma": "^3.8.1",
+    "ts-node": "^10.4.0",
+    "typescript": "latest"
   }
 }

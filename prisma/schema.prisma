@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  email     String    @unique
+  nickname  String    @unique
+  password  String
+  isAdmin   Boolean   @default(false)
+  products  Product[]
+  reviews   Review[]
+  orders    Order[]
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String?
+  comment   String?
+  rating    Rating
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+
+model Product {
+  id           Int         @id @default(autoincrement())
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  name         String
+  category     String
+  brand        String
+  description  String
+  price        Float
+  image        String
+  countInStock Int
+  reviews      Review[]
+  creator      User        @relation(fields: [creatorId], references: [id])
+  creatorId    Int
+  orderItems   OrderItem[]
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  itemsPrice      Float
+  shippingPrice   Float
+  totalPrice      Float
+  shippingAddress String
+  orderItems      OrderItem[]
+  creator         User        @relation(fields: [creatorId], references: [id])
+  creatorId       Int
+}
+
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  qty       Int
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   Int
+}
+
+enum Rating {
+  one
+  two
+  three
+  four
+  five
+}

@@ -30,8 +30,8 @@ export type User = {
   __typename?: "User";
   email: Scalars["String"];
   id: Scalars["ID"];
+  isAdmin: Scalars["Boolean"];
   nickname: Scalars["String"];
-  password: Scalars["String"];
 };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -44,7 +44,7 @@ export type GetUsersQuery = {
         id: string;
         email: string;
         nickname: string;
-        password: string;
+        isAdmin: boolean;
       }
     | null
     | undefined
@@ -57,7 +57,7 @@ export const GetUsersDocument = gql`
       id
       email
       nickname
-      password
+      isAdmin
     }
   }
 `;

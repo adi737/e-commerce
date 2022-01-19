@@ -3,13 +3,13 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import client from "../utils/apolloClient";
 import { GetUsersDocument, User } from "../generated/graphql";
-import { NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 
 interface HomeProps {
   users: User[];
 }
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const res = await client.query({
     query: GetUsersDocument,
   });
