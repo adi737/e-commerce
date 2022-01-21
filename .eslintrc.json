@@ -11,5 +11,5 @@
     "@typescript-eslint/no-explicit-any": "error",
     "prefer-const": "off"
   },
-  "ignorePatterns": ["node_modules/*", ".next/*", ".out/*", "generated/*"]
+  "ignorePatterns": ["node_modules/*", ".next/*", ".out/*"]
 }
