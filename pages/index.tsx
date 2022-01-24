@@ -2,16 +2,16 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import client from "../utils/apolloClient";
-import { GetUsersDocument, User } from "../generated/graphql";
+import { GetProductsDocument, GetProductsQuery } from "../generated/graphql";
 import { GetStaticProps, NextPage } from "next";
 
 interface HomeProps {
-  users: User[];
+  getProducts: GetProductsQuery;
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   const res = await client.query({
-    query: GetUsersDocument,
+    query: GetProductsDocument,
   });
 
   try {
@@ -21,7 +21,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
     return {
       props: {
-        users: res.data.users,
+        getProducts: res.data,
       },
     };
   } catch (error) {
@@ -30,9 +30,7 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 };
 
-const Home: NextPage<HomeProps> = ({ users }) => {
-  console.log(users);
-
+const Home: NextPage<HomeProps> = ({ getProducts }) => {
   return (
     <Container maxWidth="lg">
       <Box
@@ -47,7 +45,9 @@ const Home: NextPage<HomeProps> = ({ users }) => {
         <Typography variant="h4" component="h1" gutterBottom>
           MUI v5 + Next.js with TypeScript example
         </Typography>
-        Go to the about page
+        {getProducts.products.map((product) => (
+          <Typography key={product!.id}>{product!.name}</Typography>
+        ))}
       </Box>
     </Container>
   );

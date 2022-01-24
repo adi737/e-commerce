@@ -6,8 +6,8 @@ export const productResolvers = {
       await prisma.product.findMany({
         include: {
           reviews: {
-            include: {
-              author: true,
+            select: {
+              rating: true,
             },
           },
         },

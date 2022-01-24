@@ -21,17 +21,88 @@ export type Scalars = {
   Float: number;
 };
 
+export type BaseProps = {
+  createdAt: Scalars["String"];
+  id: Scalars["ID"];
+  updatedAt: Scalars["String"];
+};
+
+/** product type */
+export type Product = BaseProps & {
+  __typename?: "Product";
+  brand: Scalars["String"];
+  category: Scalars["String"];
+  countInStock: Scalars["Int"];
+  createdAt: Scalars["String"];
+  description: Scalars["String"];
+  id: Scalars["ID"];
+  image: Scalars["String"];
+  name: Scalars["String"];
+  price: Scalars["Float"];
+  reviews?: Maybe<Array<Maybe<Review>>>;
+  updatedAt: Scalars["String"];
+};
+
+/** root type */
 export type Query = {
   __typename?: "Query";
+  /** all products */
+  products: Array<Maybe<Product>>;
+  /** all users */
   users: Array<Maybe<User>>;
 };
 
-export type User = {
+export enum Rating {
+  Five = "five",
+  Four = "four",
+  One = "one",
+  Three = "three",
+  Two = "two",
+}
+
+/** reviw type */
+export type Review = BaseProps & {
+  __typename?: "Review";
+  author: User;
+  comment?: Maybe<Scalars["String"]>;
+  createdAt: Scalars["String"];
+  id: Scalars["ID"];
+  rating: Rating;
+  title?: Maybe<Scalars["String"]>;
+  updatedAt: Scalars["String"];
+};
+
+/** user type */
+export type User = BaseProps & {
   __typename?: "User";
+  createdAt: Scalars["String"];
   email: Scalars["String"];
   id: Scalars["ID"];
   isAdmin: Scalars["Boolean"];
   nickname: Scalars["String"];
+  updatedAt: Scalars["String"];
+};
+
+export type GetProductsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetProductsQuery = {
+  __typename?: "Query";
+  products: Array<
+    | {
+        __typename?: "Product";
+        id: string;
+        brand: string;
+        price: number;
+        name: string;
+        image: string;
+        reviews?:
+          | Array<{ __typename?: "Review"; rating: Rating } | null | undefined>
+          | null
+          | undefined;
+      }
+    | null
+    | undefined
+  >;
 };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never }>;
@@ -51,6 +122,68 @@ export type GetUsersQuery = {
   >;
 };
 
+export const GetProductsDocument = gql`
+  query GetProducts {
+    products {
+      id
+      brand
+      price
+      name
+      image
+      reviews {
+        rating
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetProductsQuery__
+ *
+ * To run a query within a React component, call `useGetProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProductsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetProductsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetProductsQuery,
+    GetProductsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetProductsQuery, GetProductsQueryVariables>(
+    GetProductsDocument,
+    options
+  );
+}
+export function useGetProductsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetProductsQuery,
+    GetProductsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetProductsQuery, GetProductsQueryVariables>(
+    GetProductsDocument,
+    options
+  );
+}
+export type GetProductsQueryHookResult = ReturnType<typeof useGetProductsQuery>;
+export type GetProductsLazyQueryHookResult = ReturnType<
+  typeof useGetProductsLazyQuery
+>;
+export type GetProductsQueryResult = Apollo.QueryResult<
+  GetProductsQuery,
+  GetProductsQueryVariables
+>;
 export const GetUsersDocument = gql`
   query GetUsers {
     users {

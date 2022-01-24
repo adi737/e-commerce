@@ -1,19 +1,36 @@
 import { gql } from "apollo-server-micro";
 
 export const typeDefs = gql`
+  """
+  root type
+  """
   type Query {
+    """
+    all users
+    """
     users: [User]!
+    """
+    all products
+    """
     products: [Product]!
   }
 
-  type User {
+  """
+  user type
+  """
+  type User implements BaseProps {
     id: ID!
+    createdAt: String!
+    updatedAt: String!
     email: String!
     nickname: String!
     isAdmin: Boolean!
   }
 
-  type Product {
+  """
+  product type
+  """
+  type Product implements BaseProps {
     id: ID!
     createdAt: String!
     updatedAt: String!
@@ -27,7 +44,10 @@ export const typeDefs = gql`
     reviews: [Review]
   }
 
-  type Review {
+  """
+  reviw type
+  """
+  type Review implements BaseProps {
     id: ID!
     createdAt: String!
     updatedAt: String!
@@ -43,5 +63,11 @@ export const typeDefs = gql`
     three
     four
     five
+  }
+
+  interface BaseProps {
+    id: ID!
+    createdAt: String!
+    updatedAt: String!
   }
 `;

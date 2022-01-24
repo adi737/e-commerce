@@ -1,0 +1,12 @@
+query GetProducts {
+  products {
+    id
+    brand
+    price
+    name
+    image
+    reviews {
+      rating
+    }
+  }
+}
