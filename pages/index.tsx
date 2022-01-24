@@ -11,12 +11,10 @@ interface HomeProps {
 
 export const getStaticProps: GetStaticProps = async () => {
   console.log(client.link);
+  console.log(client.watchQuery.name);
   const res = await client.query({
     query: GetProductsDocument,
   });
-
-  console.log(res);
-  console.log(res.data);
 
   try {
     if (res.error || (!res.loading && !res.data)) {
