@@ -10,15 +10,25 @@ interface HomeProps {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
+  console.log(client.link);
   const res = await client.query({
     query: GetProductsDocument,
   });
 
-  return {
-    props: {
-      getProducts: res.data,
-    },
-  };
+  try {
+    if (res.error || (!res.loading && !res.data)) {
+      return { notFound: true };
+    }
+
+    return {
+      props: {
+        getProducts: res.data,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return { notFound: true };
+  }
 };
 
 const Home: NextPage<HomeProps> = ({ getProducts }) => {

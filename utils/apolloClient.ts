@@ -5,7 +5,7 @@ const client = new ApolloClient({
   uri:
     process.env.NODE_ENV === "production"
       ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/graphql`
-      : `http://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/graphql`,
+      : "http://localhost:3000/api/graphql",
   cache: new InMemoryCache(),
 });
 
