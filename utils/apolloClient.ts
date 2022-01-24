@@ -1,8 +1,7 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
-import { appUrl } from "./appUrl";
 
 const client = new ApolloClient({
-  uri: `${appUrl}/api/graphql`,
+  uri: `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/graphql`,
   cache: new InMemoryCache(),
 });
 
