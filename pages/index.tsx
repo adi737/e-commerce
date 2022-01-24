@@ -16,6 +16,8 @@ export const getStaticProps: GetStaticProps = async () => {
     query: GetProductsDocument,
   });
 
+  console.log(res.data);
+
   try {
     if (res.error || (!res.loading && !res.data)) {
       return { notFound: true };

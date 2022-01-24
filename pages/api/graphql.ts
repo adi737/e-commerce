@@ -26,7 +26,7 @@ const handler = async (req: MicroRequest, res: ServerResponse) => {
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: process.env.NODE_ENV === "production" ? true : false,
   },
 };
 
