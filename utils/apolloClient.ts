@@ -1,11 +1,20 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { SchemaLink } from "@apollo/client/link/schema";
+import { schema } from "./createSchema";
+
+const createIsomorphLink = () =>
+  typeof window === "undefined"
+    ? new SchemaLink({ schema })
+    : new HttpLink({
+        uri: "/api/graphql",
+        credentials: "same-origin",
+      });
+
+const link = createIsomorphLink();
 
 const client = new ApolloClient({
-  uri:
-    process.env.NODE_ENV === "production"
-      ? "https://e-commerce-adi737.vercel.app/api/graphql"
-      : "http://localhost:3000/api/graphql",
   cache: new InMemoryCache(),
+  link,
 });
 
 export default client;
