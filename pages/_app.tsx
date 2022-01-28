@@ -8,7 +8,7 @@ import createEmotionCache from "../utils/createEmotionCache";
 import { ApolloProvider } from "@apollo/client";
 import apolloClient from "../utils/apolloClient";
 import { useEffect, useState } from "react";
-import { MUISwitch } from "../components/MUISwitch";
+import Layout from "../components/Layout";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -51,13 +51,9 @@ export default function MyApp(props: MyAppProps) {
         <ThemeProvider theme={paletteMode === "dark" ? darkTheme : theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
-          <Component {...pageProps} />
-          <MUISwitch
-            checked={paletteMode === "light" ? false : true}
-            onChange={() =>
-              setPaletteMode(paletteMode === "light" ? "dark" : "light")
-            }
-          />
+          <Layout paletteMode={paletteMode} setPaletteMode={setPaletteMode}>
+            <Component {...pageProps} />
+          </Layout>
         </ThemeProvider>
       </CacheProvider>
     </ApolloProvider>
