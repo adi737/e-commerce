@@ -38,6 +38,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           flexBasis: "300px",
           margin: "20px 10px 0",
         }}
+        component="article"
       >
         <CardActionArea>
           <CardMedia
