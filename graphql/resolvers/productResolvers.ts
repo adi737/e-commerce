@@ -12,6 +12,28 @@ export const productResolvers = {
               },
             },
           },
+          orderBy: { id: "desc" },
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    async product(_: never, { id }: { id: number }) {
+      try {
+        return await prisma.product.findUnique({
+          where: { id },
+          include: {
+            reviews: {
+              include: {
+                author: {
+                  select: {
+                    nickname: true,
+                  },
+                },
+              },
+            },
+          },
         });
       } catch (error) {
         console.error(error);

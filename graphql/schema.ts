@@ -13,6 +13,10 @@ export const typeDefs = gql`
     all products
     """
     products: [Product]!
+    """
+    one product
+    """
+    product(id: Int!): Product
   }
 
   """

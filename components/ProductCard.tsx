@@ -6,6 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Rating } from "@prisma/client";
+import { useRouter } from "next/router";
 import Ratings from "./Ratings";
 
 interface ProductCardProps {
@@ -31,6 +32,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { push } = useRouter();
   return (
     <>
       <Card
@@ -39,6 +41,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           margin: "20px 10px 0",
         }}
         component="article"
+        onClick={() => {
+          push(`/product/${product.id}`);
+        }}
       >
         <CardActionArea>
           <CardMedia

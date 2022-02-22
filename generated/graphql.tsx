@@ -46,10 +46,17 @@ export type Product = BaseProps & {
 /** root type */
 export type Query = {
   __typename?: "Query";
+  /** one product */
+  product?: Maybe<Product>;
   /** all products */
   products: Array<Maybe<Product>>;
   /** all users */
   users: Array<Maybe<User>>;
+};
+
+/** root type */
+export type QueryProductArgs = {
+  id: Scalars["Int"];
 };
 
 export enum Rating {
@@ -81,6 +88,44 @@ export type User = BaseProps & {
   isAdmin: Scalars["Boolean"];
   nickname: Scalars["String"];
   updatedAt: Scalars["String"];
+};
+
+export type GetProductQueryVariables = Exact<{
+  productId: Scalars["Int"];
+}>;
+
+export type GetProductQuery = {
+  __typename?: "Query";
+  product?:
+    | {
+        __typename?: "Product";
+        id: string;
+        name: string;
+        category: string;
+        brand: string;
+        description: string;
+        price: number;
+        image: string;
+        countInStock: number;
+        reviews?:
+          | Array<
+              | {
+                  __typename?: "Review";
+                  title?: string | null | undefined;
+                  comment?: string | null | undefined;
+                  rating: Rating;
+                  createdAt: string;
+                  updatedAt: string;
+                  author: { __typename?: "User"; nickname: string };
+                }
+              | null
+              | undefined
+            >
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type GetProductsQueryVariables = Exact<{ [key: string]: never }>;
@@ -122,6 +167,79 @@ export type GetUsersQuery = {
   >;
 };
 
+export const GetProductDocument = gql`
+  query GetProduct($productId: Int!) {
+    product(id: $productId) {
+      id
+      name
+      category
+      brand
+      description
+      price
+      image
+      countInStock
+      reviews {
+        title
+        comment
+        rating
+        createdAt
+        updatedAt
+        author {
+          nickname
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetProductQuery__
+ *
+ * To run a query within a React component, call `useGetProductQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProductQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProductQuery({
+ *   variables: {
+ *      productId: // value for 'productId'
+ *   },
+ * });
+ */
+export function useGetProductQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetProductQuery,
+    GetProductQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetProductQuery, GetProductQueryVariables>(
+    GetProductDocument,
+    options
+  );
+}
+export function useGetProductLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetProductQuery,
+    GetProductQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetProductQuery, GetProductQueryVariables>(
+    GetProductDocument,
+    options
+  );
+}
+export type GetProductQueryHookResult = ReturnType<typeof useGetProductQuery>;
+export type GetProductLazyQueryHookResult = ReturnType<
+  typeof useGetProductLazyQuery
+>;
+export type GetProductQueryResult = Apollo.QueryResult<
+  GetProductQuery,
+  GetProductQueryVariables
+>;
 export const GetProductsDocument = gql`
   query GetProducts {
     products {

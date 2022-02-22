@@ -1,48 +1,35 @@
 import Box from "@mui/material/Box";
 import client from "../utils/apolloClient";
-import { GetProductsDocument, GetProductsQuery } from "../generated/graphql";
+import {
+  GetProductsDocument,
+  GetProductsQuery,
+  GetProductsQueryResult,
+} from "../generated/graphql";
 import { GetStaticProps, NextPage } from "next";
 import ProductCard from "../components/ProductCard";
 import Pagination from "@mui/material/Pagination";
 import { useState } from "react";
-import { useRouter } from "next/router";
 
 interface HomeProps {
   getProducts: GetProductsQuery;
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const res = await client.query({
+  const res = (await client.query({
     query: GetProductsDocument,
-  });
+  })) as GetProductsQueryResult;
 
-  try {
-    if (res.error || (!res.loading && !res.data)) {
-      return { notFound: true };
-    }
-
-    return {
-      props: {
-        getProducts: res.data,
-      },
-      revalidate: 10,
-    };
-  } catch (error) {
-    console.error(error);
-    return { notFound: true };
-  }
+  return {
+    props: {
+      getProducts: res.data,
+    },
+  };
 };
 
 const Home: NextPage<HomeProps> = ({ getProducts }) => {
-  const router = useRouter();
-  const { page } = router.query;
   const [currentProducts, setCurrentProducts] = useState<
     GetProductsQuery["products"]
-  >(
-    page
-      ? getProducts.products.slice((Number(page) - 1) * 12, Number(page) * 12)
-      : getProducts.products.slice(0, 12)
-  );
+  >(getProducts.products.slice(0, 12));
 
   return (
     <>
